@@ -5,6 +5,7 @@ declare (strict_types = 1);
 namespace MyApp\Routing;
 
 use MyApp\Controller\DefaultController;
+use MyApp\Controller\UserController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -19,6 +20,8 @@ class Router
         $this->dependencyContainer = $dependencyContainer;
         $this->pageMappings = [
             'home' => [DefaultController::class, 'home'],
+            'register' => [UserController::class, 'register'],
+            'login' => [UserController::class, 'login'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
         ];
