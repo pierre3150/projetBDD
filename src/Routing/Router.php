@@ -24,6 +24,8 @@ class Router
             'login' => [UserController::class, 'login'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
+            'profile' => [UserController::class, 'profile'],
+            'logout' => [UserController::class, 'logout'],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';

@@ -16,6 +16,9 @@ class UserController
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $this->twig = $twig;
         $this->db = $dependencyContainer->get('PDO');
     }
@@ -87,6 +90,11 @@ class UserController
             $email = $_POST['email'];
             $password = $_POST['password'];
 
+            // Check if session is already started
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
             // Retrieve the salt for the given email
             $stmt = $this->db->prepare('SELECT * FROM User');
             $stmt->execute();
@@ -97,11 +105,16 @@ class UserController
                 if ($hashedEmail === $user['email']) {
                     // Verify the password
                     if (password_verify($password, $user['password'])) {
-                        session_start();
+                        // Store user information in the session
                         $_SESSION['user_id'] = $user['id_user'];
-                        $_SESSION['email'] = $user['email'];
+                        $_SESSION['email'] = $email;
                         $_SESSION['role'] = $user['role'];
                         echo 'Login successful!';
+                        echo '<script>
+                            setTimeout(function() {
+                                window.location.href = "/projetBDD/index.php?page=home";
+                            }, 2000);
+                        </script>';
                         return;
                     } else {
                         echo 'Invalid email or password.';
@@ -113,5 +126,27 @@ class UserController
         } else {
             echo $this->twig->render('user/login.html.twig');
         }
+    }
+
+    public function profile()
+    {
+        if (isset($_SESSION['user_id'])) {
+            echo $this->twig->render('user/profile.html.twig', ['email' => $_SESSION['email']]);
+        } else {
+            echo '<script>
+            alert("You need to log in first.");
+            window.location.href = "/projetBDD/index.php?page=login";
+        </script>';
+        }
+    }
+
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        echo '<script>
+        alert("You have been logged out.");
+        window.location.href = "/projetBDD/index.php?page=home";
+    </script>';
     }
 }

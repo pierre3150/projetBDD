@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Profile</h2>
+    <p>Email: {{ email }}</p>
+    <form action="/projetBDD/index.php?page=logout" method="post">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+</div>
+{% endblock %}
