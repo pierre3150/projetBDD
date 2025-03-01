@@ -1,11 +1,14 @@
 <?php
 
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace MyApp\Routing;
 
 use MyApp\Controller\DefaultController;
 use MyApp\Controller\UserController;
+use MyApp\Controller\AdminController;
+use MyApp\Controller\CoureursController;
+use MyApp\Controller\EquipesController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -26,6 +29,18 @@ class Router
             '500' => [DefaultController::class, 'error500'],
             'profile' => [UserController::class, 'profile'],
             'logout' => [UserController::class, 'logout'],
+            'admin' => [AdminController::class, 'admin'],
+            'edit_stage' => [AdminController::class, 'editStage'],
+            'delete_stage' => [AdminController::class, 'deleteStage'],
+            'add_stage' => [AdminController::class, 'addStage'],
+            'add_city' => [AdminController::class, 'addCity'],
+            'list_coureurs' => [CoureursController::class, 'listCoureurs'],
+            'show_coureur' => [CoureursController::class, 'showCoureur'],
+            'add_coureur' => [CoureursController::class, 'addCoureur'],
+            'delete_coureur' => [CoureursController::class, 'deleteCoureur'],
+            'edit_coureur' => [CoureursController::class, 'editCoureur'],
+            'list_equipes' => [EquipesController::class, 'listEquipes'],
+
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';

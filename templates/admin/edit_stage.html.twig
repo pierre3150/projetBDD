@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Edit Stage{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Stage</h2>
+    {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+    <form action="/projetBDD/index.php?page=edit_stage&id={{ etape.id_etape }}" method="post">
+        <div class="mb-3">
+            <label for="id_etape" class="form-label">Stage ID:</label>
+            <input type="number" class="form-control" id="id_etape" name="id_etape" value="{{ etape.id_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="date_etape" class="form-label">Date:</label>
+            <input type="date" class="form-control" id="date_etape" name="date_etape" value="{{ etape.date_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="type_etape" class="form-label">Type:</label>
+            <input type="text" class="form-control" id="type_etape" name="type_etape" value="{{ etape.type_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="distance" class="form-label">Distance (km):</label>
+            <input type="number" class="form-control" id="distance" name="distance" value="{{ etape.distance }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="repos_transfert" class="form-label">Rest/Transfer:</label>
+            <select class="form-control" id="repos_transfert" name="repos_transfert" required>
+                <option value="1" {{ etape.repos_transfert ? 'selected' : '' }}>Yes</option>
+                <option value="0" {{ not etape.repos_transfert ? 'selected' : '' }}>No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="ville_dep" class="form-label">Departure City:</label>
+            <input type="text" class="form-control" id="ville_dep" name="ville_dep" value="{{ etape.ville_dep }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="ville_arr" class="form-label">Arrival City:</label>
+            <input type="text" class="form-control" id="ville_arr" name="ville_arr" value="{{ etape.ville_arr }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

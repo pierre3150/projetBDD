@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Runner Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Runner Profile</h2>
+    <p><strong>Name:</strong> {{ coureur.nom_coureur }} {{ coureur.prenom_coureur }}</p>
+    <p><strong>Date of Birth:</strong> {{ coureur.date_naissance }}</p>
+    <p><strong>Country Code:</strong> {{ coureur.code_pays }}</p>
+    <p><strong>Team Number:</strong> {{ coureur.num_equipe }}</p>
+</div>
+{% endblock %}

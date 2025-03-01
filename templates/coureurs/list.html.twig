@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block title %}List of Runners{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">List of Runners</h2>
+    <form method="get" action="/projetBDD/index.php" class="mb-4">
+        <input type="hidden" name="page" value="list_coureurs">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or surname" value="{{ search }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+    {% if session.role == 'admin' %}
+        <form method="post" action="/projetBDD/index.php?page=add_coureur" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="nom_coureur" class="form-control" placeholder="First Name" required>
+                <input type="text" name="prenom_coureur" class="form-control" placeholder="Last Name" required>
+                <input type="date" name="date_naissance" class="form-control" placeholder="Date of Birth" required>
+                <select name="code_pays" class="form-control">
+                    <option value="">Select Country Code</option>
+                    {% for country in countries %}
+                        <option value="{{ country.code_pays }}">{{ country.nom_pays }}</option>
+                    {% endfor %}
+                </select>
+                <select name="num_equipe" class="form-control">
+                    <option value="">Select Team Number</option>
+                    {% for team in teams %}
+                        <option value="{{ team.id_equipe }}">{{ team.nom_equipe }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-success" type="submit">Add Runner</button>
+            </div>
+        </form>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Profile</th>
+                {% if session.role == 'admin' %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for coureur in coureurs %}
+                <tr>
+                    <td>{{ coureur.nom_coureur }} {{ coureur.prenom_coureur }}</td>
+                    <td>
+                        <a href="/projetBDD/index.php?page=show_coureur&id={{ coureur.id_dossard }}" class="btn btn-primary">
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </td>
+                    {% if session.role == 'admin' %}
+                        <td>
+                            <form method="post" action="/projetBDD/index.php?page=edit_coureur" class="d-inline">
+                                <input type="hidden" name="id_dossard" value="{{ coureur.id_dossard }}">
+                                <input type="text" name="nom_coureur" value="{{ coureur.nom_coureur }}" required>
+                                <input type="text" name="prenom_coureur" value="{{ coureur.prenom_coureur }}" required>
+                                <input type="date" name="date_naissance" value="{{ coureur.date_naissance }}" required>
+                                <input type="text" name="code_pays" value="{{ coureur.code_pays }}" required>
+                                <input type="text" name="num_equipe" value="{{ coureur.num_equipe }}" required>
+                                <button class="btn btn-warning" type="submit">Edit</button>
+                            </form>
+                            <a href="/projetBDD/index.php?page=delete_coureur&id={{ coureur.id_dossard }}" class="btn btn-danger">Delete</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Add Stage{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Add Stage</h2>
+    {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+    <form action="/projetBDD/index.php?page=add_stage" method="post">
+        <div class="mb-3">
+            <label for="id_etape" class="form-label">Stage ID:</label>
+            <input type="number" class="form-control" id="id_etape" name="id_etape" value="{{ id_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="date_etape" class="form-label">Date:</label>
+            <input type="date" class="form-control" id="date_etape" name="date_etape" value="{{ date_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="type_etape" class="form-label">Type:</label>
+            <input type="text" class="form-control" id="type_etape" name="type_etape" value="{{ type_etape }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="distance" class="form-label">Distance (km):</label>
+            <input type="number" class="form-control" id="distance" name="distance" value="{{ distance }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="repos_transfert" class="form-label">Rest/Transfer:</label>
+            <select class="form-control" id="repos_transfert" name="repos_transfert" required>
+                <option value="1" {{ repos_transfert == 1 ? 'selected' : '' }}>Yes</option>
+                <option value="0" {{ repos_transfert == 0 ? 'selected' : '' }}>No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="ville_dep" class="form-label">Departure City:</label>
+            <input type="text" class="form-control" id="ville_dep" name="ville_dep" value="{{ ville_dep }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="ville_arr" class="form-label">Arrival City:</label>
+            <input type="text" class="form-control" id="ville_arr" name="ville_arr" value="{{ ville_arr }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Stage</button>
+    </form>
+</div>
+{% endblock %}

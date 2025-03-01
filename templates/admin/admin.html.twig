@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} Gestion du tour de France 2022{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Admin</h2>
+    <div class="row">
+        <div class="col-12">
+            <h3>Stages</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Distance (km)</th>
+                        <th>Rest/Transfer</th>
+                        <th>Departure City</th>
+                        <th>Arrival City</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for etape in etapes %}
+                        <tr>
+                            <td>{{ etape.id_etape }}</td>
+                            <td>{{ etape.date_etape }}</td>
+                            <td>{{ etape.type_etape }}</td>
+                            <td>{{ etape.distance }}</td>
+                            <td>{{ etape.repos_transfert ? 'Yes' : 'No' }}</td>
+                            <td>{{ etape.ville_dep }}</td>
+                            <td>{{ etape.ville_arr }}</td>
+                            <td>
+                                <a href="index.php?page=edit_stage&id={{ etape.id_etape }}" class="btn btn-primary">Edit</a>
+                                <a href="index.php?page=delete_stage&id={{ etape.id_etape }}" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="index.php?page=add_stage" class="btn btn-success">Add Stage</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

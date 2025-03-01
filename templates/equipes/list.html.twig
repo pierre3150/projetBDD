@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}List of Teams{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">List of Teams</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Profile</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipe in equipes %}
+                <tr>
+                    <td>{{ equipe.nom_equipe }}</td>
+                    <td>
+                        <a href="/projetBDD/index.php?page=list_coureurs&teamid={{ equipe.id_equipe }}" class="btn btn-primary">
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
