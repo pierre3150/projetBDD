@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace MyApp\Controller;
 
-use Twig\Environment;
 use MyApp\Service\DependencyContainer;
+use Twig\Environment;
 
 class CoureursController
 {
@@ -21,19 +21,24 @@ class CoureursController
     public function listCoureurs()
     {
         $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
-        $teamId = filter_input(INPUT_GET, 'teamid', FILTER_VALIDATE_INT);
+        $teamId = filter_input(INPUT_GET, 'teamid', FILTER_SANITIZE_STRING);
         $params = [];
+        $conditions = [];
 
-        if ($teamId) {
-            $sql = 'SELECT id_dossard, nom_coureur, prenom_coureur, code_pays, num_equipe FROM Coureurs WHERE num_equipe = :team_id';
+        $sql = 'SELECT id_dossard, nom_coureur, prenom_coureur, code_pays, num_equipe FROM Coureurs';
+
+        if (!empty($teamId)) {
+            $conditions[] = 'num_equipe = :team_id';
             $params[':team_id'] = $teamId;
-        } else {
-            $sql = 'SELECT id_dossard, nom_coureur, prenom_coureur, code_pays, num_equipe FROM Coureurs';
         }
 
         if ($search) {
-            $sql .= ' WHERE nom_coureur LIKE :search OR prenom_coureur LIKE :search';
+            $conditions[] = '(nom_coureur LIKE :search OR prenom_coureur LIKE :search)';
             $params[':search'] = '%' . $search . '%';
+        }
+
+        if (!empty($conditions)) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
         }
 
         $stmt = $this->db->prepare($sql);
@@ -43,7 +48,6 @@ class CoureursController
         $stmt->execute();
         $coureurs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        // Fetch teams and countries
         $teams = $this->getTeams();
         $countries = $this->getCountries();
 
@@ -51,7 +55,7 @@ class CoureursController
             'coureurs' => $coureurs,
             'search' => $search,
             'teams' => $teams,
-            'countries' => $countries
+            'countries' => $countries,
         ]);
     }
 
