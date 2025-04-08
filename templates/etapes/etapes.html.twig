@@ -4,49 +4,90 @@
 {% endblock %}
 
 {% block content %}
-	<h1 style="text-align: center; font-weight: bold; font-size: 2rem; margin-bottom: 2rem;">
-        Liste des étapes
-    </h1>
+	<h1 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin: 2rem 0 3rem 0;">
+		Liste des étapes
+	</h1>
 
-    <!-- En-têtes du tableau -->
-    <table style="margin: auto; border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; width: 90%; table-layout: fixed">
-        <thead>
-            <tr style="font-weight: bold;">
-                <th style="padding: 16px; width: 14%">Date de l'étape</th>
-                <th style="padding: 16px; width: 14%">Numéro de l'étape</th>
-                <th style="padding: 16px; width: 14%">Ville Dep</th>
-                <th style="padding: 16px; width: 14%">Ville Ar</th>
-                <th style="padding: 16px; width: 14%">Distance</th>
-                <th style="padding: 16px; width: 14%">Type d'étape</th>
-            </tr>
-        </thead>
-    </table>
+	<!-- En-têtes du tableau -->
+	<table style="margin: auto; border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; width: 90%; table-layout: fixed">
+		<thead>
+			<tr style="font-weight: bold;">
+				<th style="padding: 16px; width: 14%">Date de l'étape</th>
+				<th style="padding: 16px; width: 14%">Numéro de l'étape</th>
+				<th style="padding: 16px; width: 14%">Ville Dep</th>
+				<th style="padding: 16px; width: 14%">Ville Ar</th>
+				<th style="padding: 16px; width: 14%">Distance</th>
+				<th style="padding: 16px; width: 14%">Type d'étape</th>
+				<th style="padding: 16px; width: 14%">Télécharger PDF étape</th>
+			</tr>
+		</thead>
+	</table>
 
-    <!-- Données du tableau -->
-    <table style="margin: auto; width: 90%; border-collapse: collapse; background-color: yellow; text-align: center; font-family: Arial, sans-serif; table-layout: fixed; border: 1px solid black;">
-        <tbody>
-            {% for etape in etapes %}
-                <tr style="border-bottom: 1px solid black;">
-                    <td style="padding: 12px; border: 1px solid black;">{{ etape.dateEtape }}</td>
-                    <td style="padding: 12px; border: 1px solid black;">
-                        {% if not etape.reposTransfert %}
-                            {{ loop.index }}<sup>e</sup> étape
-                        {% else %}
-                            Aucune
-                        {% endif %}
-                    </td>
-                    <td style="padding: 12px; border: 1px solid black;">{{ etape.ville_dep ?? 'Aucun' }}</td>
-                    <td style="padding: 12px; border: 1px solid black;">{{ etape.ville_arr ?? 'Aucun' }}</td>
-                    <td style="padding: 12px; border: 1px solid black;">{{ etape.distance ?? 'Aucun' }} km</td>
-                    <td style="padding: 12px; border: 1px solid black;">
-                        {% if etape.reposTransfert %}
-                            transfert vers la France
-                        {% else %}
-                            {{ etape.typeEtape ?? '...' }}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+	<!-- Données du tableau -->
+	<table style="margin: auto; width: 90%; border-collapse: collapse; background-color: yellow; text-align: center; font-family: Arial, sans-serif; table-layout: fixed; border: 1px solid black;">
+		<tbody>
+			{% for etape in etapes %}
+				<tr style="border-bottom: 1px solid black;">
+					<td style="padding: 12px; border: 1px solid black;">{{ etape.dateEtape }}</td>
+					<td style="padding: 12px; border: 1px solid black;">
+						{% if not etape.reposTransfert %}
+							{{ loop.index }}<sup>e</sup>
+							étape
+						{% else %}
+							Aucune
+						{% endif %}
+					</td>
+					<td style="padding: 12px; border: 1px solid black;">{{ etape.ville_dep ?? 'Aucun' }}</td>
+					<td style="padding: 12px; border: 1px solid black;">{{ etape.ville_arr ?? 'Aucun' }}</td>
+					<td style="padding: 12px; border: 1px solid black;">{{ etape.distance ?? 'Aucun' }}
+						km</td>
+					<td style="padding: 12px; border: 1px solid black;">
+						{% if etape.reposTransfert %}
+							transfert vers la France
+						{% else %}
+							{{ etape.typeEtape ?? '...' }}
+						{% endif %}
+					</td>
+					<td style="padding: 12px; border: 1px solid black;">
+						<button class="download-pdf" data-index="{{ loop.index }}" data-etape="{{ etape|json_encode }}">
+							<i class="fas fa-download"></i>
+						</button>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script>
+		document.querySelectorAll('.download-pdf').forEach(button => {
+button.addEventListener('click', function () {
+const etapeData = JSON.parse(this.getAttribute('data-etape'));
+const {jsPDF} = window.jspdf;
+const doc = new jsPDF();
+
+doc.text("Détails de l'étape", 10, 20);
+doc.text("Date de l'étape : " + etapeData.dateEtape, 10, 30);
+doc.text("Numéro de l'étape : " + (
+etapeData.reposTransfert ? "Aucune" : etapeData.typeEtape
+), 10, 40);
+doc.text("Ville Dep : " + (
+etapeData.ville_dep || 'Aucun'
+), 10, 50);
+doc.text("Ville Arr : " + (
+etapeData.ville_arr || 'Aucun'
+), 10, 60);
+doc.text("Distance : " + (
+etapeData.distance || 'Aucun'
+) + " km", 10, 70);
+doc.text("Type : " + (
+etapeData.typeEtape || 'Non spécifié'
+), 10, 80);
+
+doc.save("etape_" + etapeData.dateEtape + ".pdf");
+});
+});
+	</script>
+
+
 {% endblock %}
