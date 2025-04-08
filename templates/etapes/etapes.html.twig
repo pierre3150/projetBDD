@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des étapes
+{% endblock %}
+
+{% block content %}
+	<h1 style="text-align: center; font-weight: bold; font-size: 2rem; margin-bottom: 2rem;">
+        Liste des étapes
+    </h1>
+
+    <!-- En-têtes du tableau -->
+    <table style="margin: auto; border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; width: 90%; table-layout: fixed">
+        <thead>
+            <tr style="font-weight: bold;">
+                <th style="padding: 16px; width: 14%">Date de l'étape</th>
+                <th style="padding: 16px; width: 14%">Numéro de l'étape</th>
+                <th style="padding: 16px; width: 14%">Ville Dep</th>
+                <th style="padding: 16px; width: 14%">Ville Ar</th>
+                <th style="padding: 16px; width: 14%">Distance</th>
+                <th style="padding: 16px; width: 14%">Type d'étape</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Données du tableau -->
+    <table style="margin: auto; width: 90%; border-collapse: collapse; background-color: yellow; text-align: center; font-family: Arial, sans-serif; table-layout: fixed; border: 1px solid black;">
+        <tbody>
+            {% for etape in etapes %}
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="padding: 12px; border: 1px solid black;">{{ etape.dateEtape }}</td>
+                    <td style="padding: 12px; border: 1px solid black;">
+                        {% if not etape.reposTransfert %}
+                            {{ loop.index }}<sup>e</sup> étape
+                        {% else %}
+                            Aucune
+                        {% endif %}
+                    </td>
+                    <td style="padding: 12px; border: 1px solid black;">{{ etape.ville_dep ?? 'Aucun' }}</td>
+                    <td style="padding: 12px; border: 1px solid black;">{{ etape.ville_arr ?? 'Aucun' }}</td>
+                    <td style="padding: 12px; border: 1px solid black;">{{ etape.distance ?? 'Aucun' }} km</td>
+                    <td style="padding: 12px; border: 1px solid black;">
+                        {% if etape.reposTransfert %}
+                            transfert vers la France
+                        {% else %}
+                            {{ etape.typeEtape ?? '...' }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

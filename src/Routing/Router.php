@@ -9,6 +9,7 @@ use MyApp\Controller\UserController;
 use MyApp\Controller\AdminController;
 use MyApp\Controller\CoureursController;
 use MyApp\Controller\EquipesController;
+use MyApp\Controller\EtapesController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -40,6 +41,7 @@ class Router
             'delete_coureur' => [CoureursController::class, 'deleteCoureur'],
             'edit_coureur' => [CoureursController::class, 'editCoureur'],
             'list_equipes' => [EquipesController::class, 'listEquipes'],
+            'etapes' => [EtapesController::class, 'etapes'],
 
         ];
         $this->defaultPage = 'home';
@@ -48,8 +50,9 @@ class Router
 
     public function route($twig)
     {
-        $requestedPage = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
-
+        $requestedPageRaw = filter_input(INPUT_GET, 'page', FILTER_UNSAFE_RAW);
+        $requestedPage = $requestedPageRaw !== null ? trim(strip_tags($requestedPageRaw)) : 'home'; 
+        
         if (!$requestedPage) {
             $requestedPage = $this->defaultPage;
         } else {
