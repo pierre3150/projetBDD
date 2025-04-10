@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classement Etape{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin: 2rem 0 3rem 0;">
+        Classement des Etapes
+    </h1>
+
+    <table border="1" cellpadding="10" cellspacing="0" style="margin: auto; text-align: center;">
+        <thead>
+            <tr>
+                <th>Rang</th>
+                <th>Numéro d'étape</th>
+                <th>Nom de l'équipe</th>
+                <th>Nom du coureur</th>
+                <th>Temps</th>
+                <th>Écart avec le meilleur temps</th>
+                <th>Distance Totale (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for classement in classements %}
+                <tr>
+                    <td>{{ classement.rang_coureur }}</td>
+                    <td>{{ classement.num_etape }}</td>
+                    <td>{{ classement.nom_Equipe }}</td>
+                    <td>{{ classement.nom_coureur }}</td>
+                    <td>{{ classement.temps }}</td>
+                    <td>{{ classement.ecart_avec_meilleur }}</td>
+                    <td>{{ classement.distance_totale }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

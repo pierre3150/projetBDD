@@ -30,12 +30,8 @@
 				<tr style="border-bottom: 1px solid black;">
 					<td style="padding: 12px; border: 1px solid black;">{{ etape.dateEtape }}</td>
 					<td style="padding: 12px; border: 1px solid black;">
-						{% if not etape.reposTransfert %}
-							{{ loop.index }}<sup>e</sup>
-							étape
-						{% else %}
-							Aucune
-						{% endif %}
+						{{ loop.index }}<sup>e</sup>
+						étape
 					</td>
 					<td style="padding: 12px; border: 1px solid black;">{{ etape.ville_dep ?? 'Aucun' }}</td>
 					<td style="padding: 12px; border: 1px solid black;">{{ etape.ville_arr ?? 'Aucun' }}</td>

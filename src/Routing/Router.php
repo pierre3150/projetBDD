@@ -1,15 +1,16 @@
 <?php
 
-declare (strict_types=1);
+declare (strict_types = 1);
 
 namespace MyApp\Routing;
 
-use MyApp\Controller\DefaultController;
-use MyApp\Controller\UserController;
 use MyApp\Controller\AdminController;
+use MyApp\Controller\ClassementController;
 use MyApp\Controller\CoureursController;
+use MyApp\Controller\DefaultController;
 use MyApp\Controller\EquipesController;
 use MyApp\Controller\EtapesController;
+use MyApp\Controller\UserController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -42,6 +43,9 @@ class Router
             'edit_coureur' => [CoureursController::class, 'editCoureur'],
             'list_equipes' => [EquipesController::class, 'listEquipes'],
             'etapes' => [EtapesController::class, 'etapes'],
+            'classement_general' => [ClassementController::class, 'classementGeneral'],
+            'classement_equipe' => [ClassementController::class, 'classementEquipe'],
+            'classement_etape' => [ClassementController::class, 'classementEtape'],
 
         ];
         $this->defaultPage = 'home';
@@ -51,8 +55,8 @@ class Router
     public function route($twig)
     {
         $requestedPageRaw = filter_input(INPUT_GET, 'page', FILTER_UNSAFE_RAW);
-        $requestedPage = $requestedPageRaw !== null ? trim(strip_tags($requestedPageRaw)) : 'home'; 
-        
+        $requestedPage = $requestedPageRaw !== null ? trim(strip_tags($requestedPageRaw)) : 'home';
+
         if (!$requestedPage) {
             $requestedPage = $this->defaultPage;
         } else {

@@ -1,10 +1,13 @@
 <?php
 namespace MyApp\Service;
 
-use MyApp\Model\EtapesModel;
-use MyApp\Model\EquipesModel;
-use PDO;
 use Dotenv\Dotenv;
+use MyApp\Model\ClassementEquipeModel;
+use MyApp\Model\ClassementEtapeModel;
+use MyApp\Model\ClassementGeneralModel;
+use MyApp\Model\EquipesModel;
+use MyApp\Model\EtapesModel;
+use PDO;
 
 class DependencyContainer
 {
@@ -36,6 +39,15 @@ class DependencyContainer
             case 'EquipesModel':
                 $pdo = $this->get('PDO');
                 return new EquipesModel($pdo);
+            case 'ClassementGeneralModel':
+                $pdo = $this->get('PDO');
+                return new ClassementGeneralModel($pdo);
+            case 'ClassementEquipeModel':
+                $pdo = $this->get('PDO');
+                return new ClassementEquipeModel($pdo);
+            case 'ClassementEtapeModel':
+                $pdo = $this->get('PDO');
+                return new ClassementEtapeModel($pdo);
             default:
                 throw new \Exception("No service found for key: " . $key);
         }

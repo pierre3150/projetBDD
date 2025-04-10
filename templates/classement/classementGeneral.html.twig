@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classement Général
+{% endblock %}
+
+{% block content %}
+	<h1 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin: 2rem 0 3rem 0;">
+		Classement Général
+	</h1>
+
+	<table border="1" cellpadding="10" cellspacing="0" style="margin: auto; text-align: center;">
+		<thead>
+			<tr>
+				<th>Rang</th>
+				<th>Numéro de dossard</th>
+				<th>Numéro d'équipe</th>
+				<th>Temps total</th>
+				<th>Écart avec le meilleur temps</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for coureur in general %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ coureur.num_dossard }}</td>
+					<td>{{ coureur.num_equipe }}</td>
+					<td>{{ coureur.temps_total }}</td>
+					<td>{{ coureur.ecart_format }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
